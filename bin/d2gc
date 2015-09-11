@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+
+import click
+
+
+@click.command()
+def d2gc():
+    print('fix')
+
+
+if __name__ == '__main__':
+    d2gc()
