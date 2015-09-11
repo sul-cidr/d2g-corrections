@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
 
-    name='d2g-corrections',
+    name='d2gc',
     version='0.0.0',
     description='Correcting names in d3g.',
     license='Apache-2.0',
