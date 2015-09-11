@@ -2,11 +2,21 @@
 
 
 import click
+import csv
 
 
 @click.command()
-def d2gc():
-    print('fix')
+@click.argument('corrections', type=click.File(encoding='utf-8'))
+def d2gc(corrections):
+
+    """
+    Apply name corrections to the d2g corpus.
+    """
+
+    reader = csv.DictReader(corrections)
+
+    for row in reader:
+        print(row)
 
 
 if __name__ == '__main__':

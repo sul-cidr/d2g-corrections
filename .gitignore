@@ -1,5 +1,7 @@
 *.pyc
 *.egg-info
+*.csv
 env
+.env
 build
 dist
