@@ -4,6 +4,8 @@
 import click
 import csv
 
+from d2gc.corpus import Corpus
+
 
 @click.command()
 @click.argument('corrections', type=click.File(encoding='utf-8'))
@@ -14,9 +16,14 @@ def d2gc(corrections):
     """
 
     reader = csv.DictReader(corrections)
+    corpus = Corpus.from_env()
 
     for row in reader:
-        print(row)
+        corpus.correct(
+            row['NAME'].strip(),
+            row['CORRECTED NAME'].strip(),
+            row['ALPHABETIZED NAME'].strip(),
+        )
 
 
 if __name__ == '__main__':
