@@ -61,5 +61,9 @@ class Corpus:
         For all files with a name, replace librettists.
         """
 
-        paths = self.names[original]
-        print(paths)
+        paths = self.paths[original]
+
+        for path in paths:
+            person = Person(path)
+            person.correct(original, corrected, alphabetized)
+            person.save()
