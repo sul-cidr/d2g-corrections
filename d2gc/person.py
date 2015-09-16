@@ -4,6 +4,7 @@ import codecs
 import os
 
 from lxml import etree
+from bs4 import UnicodeDammit
 
 
 class Person:
