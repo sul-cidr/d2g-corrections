@@ -89,4 +89,4 @@ class Person:
         Write changes to the file.
         """
 
-        self.tree.write(self.path, encoding='utf8')
+        self.tree.write(self.path, encoding='utf8', xml_declaration=True)
