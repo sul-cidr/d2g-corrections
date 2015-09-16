@@ -39,6 +39,19 @@ class Person:
         return [lib.text for lib in libs]
 
 
+    @property
+    def composers(self):
+
+        """
+        Query for composer names.
+
+        Returns: str
+        """
+
+        comps = self.tree.xpath('//field[@name="composer"]')
+        return [comp.text for comp in comps]
+
+
     def find_librettist(self, name):
 
         """
@@ -65,10 +78,36 @@ class Person:
         return self.tree.xpath(query % name)[0]
 
 
-    def correct(self, original, corrected, alphabetized):
+    def find_composer(self, name):
 
         """
-        For all files with a name, replace librettists.
+        Given a name, find a `composer` field.
+
+        Args:
+            name (str)
+        """
+
+        query = '//field[@name="composer"][.="%s"]'
+        return self.tree.xpath(query % name)[0]
+
+
+    def find_composer_sort(self, name):
+
+        """
+        Given a name, find a `composerSort` field.
+
+        Args:
+            name (str)
+        """
+
+        query = '//field[@name="composer"][.="%s"]/following-sibling::field'
+        return self.tree.xpath(query % name)[0]
+
+
+    def correct_librettist(self, original, corrected, alphabetized):
+
+        """
+        Replace librettist names.
 
         Args:
             original (str)
@@ -81,6 +120,24 @@ class Person:
 
         librettist.text = corrected
         librettist_sort.text = alphabetized
+
+
+    def correct_composer(self, original, corrected, alphabetized):
+
+        """
+        Replace composer names.
+
+        Args:
+            original (str)
+            corrected (str)
+            alphabetized (str)
+        """
+
+        composer = self.find_composer(original)
+        composer_sort = self.find_composer_sort(original)
+
+        composer.text = corrected
+        composer_sort.text = alphabetized
 
 
     def save(self):

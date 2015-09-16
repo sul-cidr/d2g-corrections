@@ -31,16 +31,14 @@ class Corpus:
         """
 
         self.path = os.path.abspath(path)
-        self.index()
-
-
-    def index(self):
-
-        """
-        Map name -> file paths.
-        """
-
         self.paths = {}
+
+
+    def index_librettists(self):
+
+        """
+        Index librettist -> paths.
+        """
 
         # Glob .xml files.
         path = os.path.join(self.path, '*.xml')
@@ -55,7 +53,26 @@ class Corpus:
                 paths.append(path)
 
 
-    def correct(self, original, corrected, alphabetized):
+    def index_composers(self):
+
+        """
+        Index composer -> paths.
+        """
+
+        # Glob .xml files.
+        path = os.path.join(self.path, '*.xml')
+
+        for path in glob.glob(path):
+
+            person = Person(path)
+
+            # Map librettists -> path.
+            for lib in person.composers:
+                paths = self.paths.setdefault(lib, [])
+                paths.append(path)
+
+
+    def correct_librettists(self, original, corrected, alphabetized):
 
         """
         For all files with a name, replace librettists.
@@ -68,7 +85,26 @@ class Corpus:
 
             try:
                 person = Person(path)
-                person.correct(original, corrected, alphabetized)
+                person.correct_librettist(original, corrected, alphabetized)
+                person.save()
+
+            except: pass
+
+
+    def correct_composers(self, original, corrected, alphabetized):
+
+        """
+        For all files with a name, replace composers.
+        """
+
+        paths = self.paths.get(original)
+        if not paths: return
+
+        for path in paths:
+
+            try:
+                person = Person(path)
+                person.correct_composer(original, corrected, alphabetized)
                 person.save()
 
             except: pass

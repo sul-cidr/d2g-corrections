@@ -7,19 +7,47 @@ import csv
 from d2gc.corpus import Corpus
 
 
-@click.command()
+@click.group()
+def d2gc():
+    pass
+
+
+@d2gc.command()
 @click.argument('corrections', type=click.File(encoding='utf-8'))
-def d2gc(corrections):
+def librettists(corrections):
 
     """
-    Apply name corrections to the d2g corpus.
+    Apply librettist name corrections.
     """
 
     reader = csv.DictReader(corrections)
     corpus = Corpus.from_env()
 
+    corpus.index_librettists()
+
     for row in reader:
-        corpus.correct(
+        corpus.correct_librettists(
+            row['NAME'].strip(),
+            row['CORRECTED NAME'].strip(),
+            row['ALPHABETIZED NAME'].strip(),
+        )
+
+
+@d2gc.command()
+@click.argument('corrections', type=click.File(encoding='utf-8'))
+def composers(corrections):
+
+    """
+    Apply composer name corrections.
+    """
+
+    reader = csv.DictReader(corrections)
+    corpus = Corpus.from_env()
+
+    corpus.index_composers()
+
+    for row in reader:
+        corpus.correct_composers(
             row['NAME'].strip(),
             row['CORRECTED NAME'].strip(),
             row['ALPHABETIZED NAME'].strip(),
