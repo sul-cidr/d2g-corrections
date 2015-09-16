@@ -65,6 +65,10 @@ class Corpus:
         if not paths: return
 
         for path in paths:
-            person = Person(path)
-            person.correct(original, corrected, alphabetized)
-            person.save()
+
+            try:
+                person = Person(path)
+                person.correct(original, corrected, alphabetized)
+                person.save()
+
+            except: pass
